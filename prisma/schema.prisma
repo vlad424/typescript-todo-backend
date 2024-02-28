@@ -19,6 +19,7 @@ model User {
   login      String @unique
   first_name String
   last_name  String
+  password   String
 
   posts IArrayTasks[]
 }
