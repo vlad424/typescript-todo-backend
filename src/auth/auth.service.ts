@@ -1,13 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { AuthDto } from './auth.dto';
+import { AuthDtoAuth, AuthDtoRegister } from './auth.dto';
 import { hash } from 'argon2';
 
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService) {}
 
-  async register(dto: AuthDto) {
+  async register(dto: AuthDtoRegister) {
     const oldUser = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -26,5 +26,8 @@ export class AuthService {
 		})
 
 		return user
+  }
+  async authorization(dto: AuthDtoAuth) {
+	return 'auth'
   }
 }
