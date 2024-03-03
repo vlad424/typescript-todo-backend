@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { AuthDtoAuth, AuthDtoRegister } from './auth.dto';
 import { hash } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -28,12 +28,32 @@ export class AuthService {
         first_name: dto.first_name,
         login: dto.login,
         password: await hash(dto.password),
+        posts: {
+          create: [
+            {
+              name: 'Today',
+              todos: {
+                create: [
+                  {
+                    name: "make together",
+                    desc: "",
+                    date:
+                      new Date().toLocaleDateString().toString() +
+                      " " +
+                      new Date().toLocaleTimeString().toString(),
+                    text_color: "#000",
+                  },
+                ],
+              }
+            },
+          ],
+        },
       },
     });
 
     const token = await this.issueToken(user.id);
 
-    return {user: 	this.returnFields(user), token};
+    return { user : this.returnFields(user), token };
   }
 
   private async issueToken(userId: number) {
@@ -50,9 +70,9 @@ export class AuthService {
   }
   private returnFields(user: User) {
     return {
-			email: user.email,
-			login: user.login,
-			id: user.id
-		}
+      email: user.email,
+      login: user.login,
+      id: user.id,
+    };
   }
 }
