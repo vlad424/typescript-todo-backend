@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { AuthDtoAuth, AuthDtoRegister } from './auth.dto';
-import { hash } from 'argon2';
+import { AuthDtoAuth, AuthDtoRegister } from './dto/auth.dto';
+import { hash, verify } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma, User } from '@prisma/client';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +16,36 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
   ) {}
+
+  async login(dto: AuthDtoAuth) {
+    const user = await this.prisma.user.findUnique({
+      where: { login: dto.login, email: dto.email },
+    });
+
+    if(!user) throw new NotFoundException('user not found')
+
+    const isValid = await verify(user.password, dto.password)
+    
+    if(!isValid) throw new UnauthorizedException('invalid password')
+
+    const tokens = await this.issueToken(user.id)
+
+    return {user: user, tokens}
+  }
+
+  async getNewToken(refreshToken: string) {
+    const result = await this.jwt.verifyAsync(refreshToken);
+
+    if (!result) throw new UnauthorizedException('invalid token');
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: result.id },
+    });
+
+    const tokens = this.issueToken(user.id);
+
+    return { user: user, tokens };
+  }
 
   async register(dto: AuthDtoRegister) {
     const oldUser = await this.prisma.user.findUnique({
@@ -35,17 +70,35 @@ export class AuthService {
               todos: {
                 create: [
                   {
-                    name: "make together",
-                    desc: "",
+                    name: 'make together',
+                    desc: '',
                     date:
                       new Date().toLocaleDateString().toString() +
-                      " " +
+                      ' ' +
                       new Date().toLocaleTimeString().toString(),
-                    text_color: "#000",
+                    text_color: '#000',
                   },
                 ],
-              }
+              },
+              
             },
+            {
+              name: 'Today',
+              todos: {
+                create: [
+                  {
+                    name: 'make together',
+                    desc: '',
+                    date:
+                      new Date().toLocaleDateString().toString() +
+                      ' ' +
+                      new Date().toLocaleTimeString().toString(),
+                    text_color: '#000',
+                  },
+                ],
+              },
+              
+            }
           ],
         },
       },
@@ -53,7 +106,7 @@ export class AuthService {
 
     const token = await this.issueToken(user.id);
 
-    return { user : this.returnFields(user), token };
+    return { user: this.returnFields(user), token };
   }
 
   private async issueToken(userId: number) {
