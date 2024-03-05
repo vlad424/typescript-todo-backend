@@ -21,7 +21,7 @@ model User {
   last_name  String
   password   String
 
-  posts IArrayTasks[]
+  posts IArrayTasks[] 
 }
 
 model IArrayTasks {
