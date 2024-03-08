@@ -10,7 +10,7 @@ export class AuthController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post('/')
+  @Post('/register')
   async register(@Body() dto: AuthDtoRegister) {
     return this.authService.register(dto)
   }
@@ -25,7 +25,7 @@ export class AuthController {
 
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Post('/login')
+  @Post('/')
   async login(@Body() dto: AuthDtoAuth) {
     return this.authService.login(dto)
   }

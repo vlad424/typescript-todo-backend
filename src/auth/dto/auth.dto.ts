@@ -14,9 +14,6 @@ export class AuthDtoRegister {
   password: string;
 }
 export class AuthDtoAuth {
-  @IsEmail()
-  email?: string
-  
-  login?: string
+  login: string
   password: string
 }
