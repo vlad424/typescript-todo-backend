@@ -22,8 +22,6 @@ export class AuthService {
       where: { login: dto?.login},
     });
 
-    console.log(dto)
-
     if(!user) throw new NotFoundException('user not found')
 
     const isValid = await verify(user.password, dto.password)
