@@ -30,7 +30,7 @@ export class AuthService {
 
     const tokens = await this.issueToken(user.id)
 
-    return {user: user, tokens}
+    return {user: user, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken}
   }
 
   async getNewToken(refreshToken: string) {
