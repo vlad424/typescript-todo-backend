@@ -6,8 +6,8 @@ import { getUserTasks } from './dto/task.dto';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Get('')
-  async getUserTasks(@Body() dto: getUserTasks) {
-    return this.taskService.getUsersPosts(dto.userId)
+  @Get('/')
+  async getUserTasks(@Body() dto: number) {
+    return this.taskService.getUsersPosts(dto)
   }
 }

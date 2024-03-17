@@ -6,8 +6,8 @@ export class TaskService {
   constructor(private prisma: PrismaService) {}
 
   async getUsersPosts(dto: number) {
-    const user = this.prisma.user.findUnique({
-      where: { id: +dto },
+    const user = await this.prisma.user.findUnique({
+      where: { id: dto },
       include: {
         posts: {
           include: {
