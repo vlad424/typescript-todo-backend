@@ -71,7 +71,7 @@ export class AuthService {
                 create: [
                   {
                     name: 'make together',
-                    desc: '',
+                    desc: 'desc',
                     date:
                       new Date().toLocaleDateString().toString() +
                       ' ' +
@@ -83,12 +83,12 @@ export class AuthService {
               
             },
             {
-              name: 'Today',
+              name: 'Tommorow',
               todos: {
                 create: [
                   {
-                    name: 'make together',
-                    desc: '',
+                    name: 'make another',
+                    desc: 'desc',
                     date:
                       new Date().toLocaleDateString().toString() +
                       ' ' +
@@ -106,7 +106,7 @@ export class AuthService {
 
     const token = await this.issueToken(user.id);
 
-    return { user: this.returnFields(user), token };
+    return { user: this.returnFields(user), accessToken: token.accessToken, refreshToken: token.refreshToken };
   }
 
   private async issueToken(userId: number) {

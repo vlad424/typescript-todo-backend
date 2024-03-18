@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { getUserTasks } from './dto/task.dto';
 
@@ -6,8 +6,8 @@ import { getUserTasks } from './dto/task.dto';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Get('/')
-  async getUserTasks(@Body() dto: number) {
-    return this.taskService.getUsersPosts(dto)
+  @Get(':id')
+  async getUserTasks(@Param() params: any) {
+    return this.taskService.getUsersPosts(params.id)
   }
 }
