@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { getUserTasks } from './dto/task.dto';
+import { getUserTasks, savePostsDto } from './dto/task.dto';
 
 @Injectable()
 export class TaskService {
@@ -19,5 +19,15 @@ export class TaskService {
     });
 
     return user.posts;
+  }
+  async saveUsersPosts(data: savePostsDto) {
+    const id = data.userId
+    const post = data.post
+
+    const user = await this.prisma.user.findUnique({
+      where: {id}
+    })
+
+    return user
   }
 }
