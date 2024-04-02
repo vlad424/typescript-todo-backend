@@ -5,5 +5,13 @@ export class getUserTasks {
 }
 export class savePostsDto {
     post: ITask
-    userId: number
+    arrayName: string
+}
+export class deletePostDto {
+    todoId: number
+}
+export class updateTaskDto {
+    todoId: number
+    desc: string
+    text_color: string
 }
