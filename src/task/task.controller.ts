@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Req } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { deletePostDto, getUserTasks, savePostsDto, updateTaskDto } from './dto/task.dto';
 
@@ -22,8 +22,8 @@ export class TaskController {
     return this.taskService.deleteTaskById(todoID)
   }
   @HttpCode(200)
-  @Patch(':id')
-  async updateTaskById(@Body() data: updateTaskDto) {
-    return this.taskService
+  @Put(':id')
+  async updateTaskById(@Body() data: updateTaskDto, @Req() request) {
+    return this.taskService.updateTaskById(data)
   }
 }

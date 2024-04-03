@@ -50,28 +50,22 @@ export class TaskService {
     const todo = await this.prisma.iTask.findUnique({
       where: {id: todoID.todoId}
     })
-
-    if(!todo) {
-      if(todo === null) throw new GoneException('post already deleted')
-      else throw new NotFoundException()
-    } // not wok how mind
+    if(todo === null) throw new NotFoundException()
     await this.prisma.iTask.delete({
       where: {id: todoID.todoId}
     })
 
     return todo
   }
-  async updateTaskById(data: updateTaskDto) {
-    const updatedTask = await this.prisma.iTask.update({
-      where: { id: +data.todoId },
+  async updateTaskById(data_req: updateTaskDto) {
+    const response = await this.prisma.iTask.update({
+      where: {id: +data_req.todoId},
       data: {
-        desc: data.desc,
-        text_color: data.text_color
-      },
+        desc: data_req.desc,
+        text_color: data_req.text_color
+      }
     })
 
-    console.log(updatedTask)
-
-    return updatedTask
+    return response
   }
 }
