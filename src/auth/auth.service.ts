@@ -63,6 +63,7 @@ export class AuthService {
         first_name: dto.first_name,
         login: dto.login,
         password: await hash(dto.password),
+        role: 'user',
         posts: {
           create: [
             {

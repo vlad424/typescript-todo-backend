@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { deletePostDto, getUserTasks, savePostsDto, updateTaskDto } from './dto/task.dto';
+import { TaskGuard } from './task.guard';
 
 @Controller('/workspace')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  //@UseGuards(TaskGuard)
   @HttpCode(200)
   @Get(':id')
   async getUserTasks(@Param() params: any) {
