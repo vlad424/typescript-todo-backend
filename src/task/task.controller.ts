@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { TaskService } from './task.service';
-import { deletePostDto, getUserTasks, savePostsDto, updateTaskDto } from './dto/task.dto';
+import { deletePostDto, getUserTasks, saveArrayDto, savePostsDto, updateTaskDto } from './dto/task.dto';
 import { TaskGuard } from './task.guard';
 
 @Controller('/workspace')
@@ -15,8 +15,9 @@ export class TaskController {
   }
   @HttpCode(200)
   @Post(':id')
-  async saveUsersPosts(@Param('id') id: number, @Body() data: savePostsDto) {
-    return this.taskService.saveUsersPosts(id, data)
+  async saveUsersPosts(@Param('id') id: number, @Body() data: savePostsDto | saveArrayDto) {
+    if(data.action === "PUT_ARRAY") return this.taskService.saveUserArray(id, data.post)
+    if(data.action === "PUT_TODO") return this.taskService.saveUsersPosts(id, data.post)
   }
   @HttpCode(200)
   @Delete(':id')

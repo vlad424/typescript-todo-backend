@@ -1,6 +1,7 @@
 import { BadGatewayException, GoneException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { deletePostDto, getUserTasks, savePostsDto, updateTaskDto } from './dto/task.dto';
+import { deletePostDto, getUserTasks, saveArrayBasic, savePostsDto, updateTaskDto } from './dto/task.dto';
+import { ITask } from '@prisma/client';
 
 @Injectable()
 export class TaskService {
@@ -22,7 +23,16 @@ export class TaskService {
 
     return user.posts;
   }
-  async saveUsersPosts(param: number, data: savePostsDto) {
+  async saveUserArray(param: number, data: any) {
+    const addArray = await this.prisma.iArrayTasks.create({
+      data: {
+        name: data.name,
+        userId: +param,
+      }
+    })
+    return addArray
+  }
+  async saveUsersPosts(param: number, data: any) {
     const todo = data.post
     const userArrayTasks = await this.prisma.user.findUnique({
       where: {id: +param},
