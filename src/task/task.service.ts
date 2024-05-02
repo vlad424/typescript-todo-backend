@@ -1,6 +1,6 @@
 import { BadGatewayException, GoneException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { deletePostDto, getUserTasks, saveArrayBasic, savePostsDto, updateTaskDto } from './dto/task.dto';
+import { deleteArrayDto, deletePostDto, getUserTasks, saveArrayBasic, savePostsDto, updateTaskDto } from './dto/task.dto';
 import { ITask } from '@prisma/client';
 
 @Injectable()
@@ -58,14 +58,35 @@ export class TaskService {
   }
   async deleteTaskById(todoID: deletePostDto) {
     const todo = await this.prisma.iTask.findUnique({
-      where: {id: todoID.todoId}
+      where: {id: +todoID.todoId}
     })
     if(todo === null) throw new NotFoundException()
     await this.prisma.iTask.delete({
-      where: {id: todoID.todoId}
+      where: {id: +todoID.todoId}
     })
 
     return todo
+  }
+  async deleteArrayByName(todoID: deleteArrayDto) {
+    const response = await this.prisma.iArrayTasks.findFirst({
+      where: {
+        userId: +todoID.id,
+        name: todoID.todoId
+      }
+    })
+    await this.prisma.iTask.deleteMany({
+      where: {
+        iArrayTasksId: response.id
+      }
+    })
+    if(response === null) throw new NotFoundException()
+    await this.prisma.iArrayTasks.delete({
+      where: {
+        id: response.id
+      }
+    })
+
+    return response
   }
   async updateTaskById(data_req: updateTaskDto) {
     const response = await this.prisma.iTask.update({

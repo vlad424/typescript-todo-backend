@@ -15,7 +15,14 @@ export class saveArrayDto {
     action: string
 }
 export class deletePostDto {
-    todoId: number
+    todoId: string
+    id: string
+    action: string
+}
+export class deleteArrayDto {
+    todoId: string
+    id: string
+    action: string
 }
 export class updateTaskDto {
     todoId: number

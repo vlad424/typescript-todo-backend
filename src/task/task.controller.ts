@@ -22,7 +22,8 @@ export class TaskController {
   @HttpCode(200)
   @Delete(':id')
   async deleteTaskById(@Body() todoID: deletePostDto) {
-    return this.taskService.deleteTaskById(todoID)
+    if(todoID.action === "DELETE_ARRAY") return this.taskService.deleteArrayByName(todoID)
+    if(todoID.action === "DELETE_TODO") return this.taskService.deleteTaskById(todoID)
   }
   @HttpCode(200)
   @Put(':id')
