@@ -1,6 +1,6 @@
 import { BadGatewayException, GoneException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { deleteArrayDto, deletePostDto, getUserTasks, saveArrayBasic, savePostsDto, updateTaskDto } from './dto/task.dto';
+import { deleteArrayDto, deletePostDto, getUserTasks, saveArrayBasic, savePostsDto, transoprtTaskDto, updateTaskDto } from './dto/task.dto';
 import { ITask } from '@prisma/client';
 
 @Injectable()
@@ -98,5 +98,24 @@ export class TaskService {
     })
 
     return response
+  }
+  async transportTaskInArray(data: transoprtTaskDto) {
+    const userArray = await this.prisma.iArrayTasks.findFirst({
+      where: {
+        userId: +data.userId,
+        name: data.nameArray
+      }
+    })
+
+    const changedArray = await this.prisma.iTask.update({
+      where: {
+        id: +data.todoId,
+      },
+      data: {
+        iArrayTasksId: userArray.id
+      }
+    })
+
+    return changedArray
   }
 }
