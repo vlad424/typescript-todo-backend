@@ -102,6 +102,16 @@ export class AuthService {
             }
           ],
         },
+        lists: {
+          create: [
+            {
+              name: "okey", 
+              lists:  {
+                create: []
+              }
+            }
+          ]
+        }
       },
     });
 
