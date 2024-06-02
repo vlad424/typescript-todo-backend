@@ -17,7 +17,8 @@ model User {
   password   String
   role       String
 
-  posts IArrayTasks[]
+  posts  IArrayTasks[]
+  lists ILists[]
 }
 
 model IArrayTasks {
@@ -36,4 +37,23 @@ model ITask {
   text_color    String
   IArrayTasks   IArrayTasks? @relation(fields: [iArrayTasksId], references: [id])
   iArrayTasksId Int?
+}
+
+model ILists {
+  id     Int     @id @default(autoincrement())
+  name   String
+  lists  IList[]
+  User   User?   @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model IList {
+  id         Int     @id @default(autoincrement())
+  name       String
+  desc       String
+  dateCreate String
+  dateAt     String
+  text_color String
+  ILists     ILists? @relation(fields: [IListsId], references: [id])
+  IListsId   Int?
 }
