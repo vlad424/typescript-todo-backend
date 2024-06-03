@@ -4,7 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '../../prisma.service';
+import { PrismaService } from 'var/task/src/prisma.service';
 import { AuthDtoAuth, AuthDtoRegister } from './dto/auth.dto';
 import { hash, verify } from 'argon2';
 import { JwtService } from '@nestjs/jwt';
