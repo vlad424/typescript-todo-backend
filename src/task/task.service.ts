@@ -1,5 +1,5 @@
 import { BadGatewayException, GoneException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'var/task/src/prisma.service';
+import { PrismaService } from 'src/prisma.service';
 import { deleteArrayDto, deletePostDto, getUserTasks, saveArrayBasic, savePostsDto, transoprtTaskDto, updateTaskDto } from './dto/task.dto';
 import { ITask } from '@prisma/client';
 
