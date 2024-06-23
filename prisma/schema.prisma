@@ -45,6 +45,7 @@ model ILists {
   lists  IList[]
   User   User?   @relation(fields: [userId], references: [id])
   userId Int?
+  addressee Int[]
 }
 
 model IList {
