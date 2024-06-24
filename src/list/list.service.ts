@@ -84,4 +84,19 @@ export class ListService {
       deletedList,
     };
   }
+  async deleteListEl(data: number) {
+    const deletedListEl = await this.prisma.iList.delete({
+      where: {
+        id: +data
+      }
+    })
+    return {
+      status: HttpStatus.OK,
+      msg: `list with id: ${data} deleted`,
+      deletedListEl,
+    };
+  }
+  async patchList() {
+    
+  }
 }
