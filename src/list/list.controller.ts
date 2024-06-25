@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ListService } from './list.service';
+import { updateListDto } from './list.dto';
 
 @Controller('/workspace/:id/admin')
 export class ListController {
@@ -20,7 +21,7 @@ export class ListController {
     if(req.action === 'DELETE LIST EL') return this.listService.deleteListEl(req.data)
   }
   @Patch()
-  async patchList(@Param() data: {adminId: number}, @Body() req: any) {
-    
+  async patchList(@Body() req: updateListDto) {
+    return this.listService.patchList(req.listId, req.data)
   }
 }

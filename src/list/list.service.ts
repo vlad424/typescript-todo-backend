@@ -26,8 +26,6 @@ export class ListService {
         },
       },
     });
-    //admin comments
-
     return { adminLists, users };
   }
   async putList(id: number, data: string) {
@@ -96,7 +94,49 @@ export class ListService {
       deletedListEl,
     };
   }
-  async patchList() {
-    
+  async patchList(listId: number, data : {desc: string, dateAt: string, text_color: string, userIdAddr: Array<string>}) {
+    const updateListEl = await this.prisma.iList.update({
+      where: {id: +listId},
+      data: {
+        dateAt: data.dateAt,
+        desc: data.desc,
+        text_color: data.text_color
+      }
+    })
+
+    if(data.userIdAddr.length !== 0) {
+      let userIds = []
+      
+      for(let i = 0; i < data.userIdAddr.length; i++) {
+        const userId = this.prisma.user.findUnique({
+          where: {email: data.userIdAddr[i]},
+          select: {
+            id: true
+          }
+        })
+        userIds.push((await userId).id)
+      }
+      const updateList = await this.prisma.iLists.update({
+        where: { id: +updateListEl.IListsId },
+        data: {
+          addressee: userIds
+        }
+      })
+      return {
+        status: HttpStatus.OK,
+        msg: `eilement list with id: ${updateListEl.id} patched & list moved to users ${data.userIdAddr}`,
+        data: {
+          updateListEl,
+          updateList
+        }
+      }
+    }
+    return {
+      status: HttpStatus.OK,
+      msg: `eilement list with id: ${updateListEl.id} patched`,
+      data: {
+        updateListEl
+      }
+    }
   }
 }
