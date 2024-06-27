@@ -17,8 +17,10 @@ model User {
   password   String
   role       String
 
-  posts IArrayTasks[]
-  lists ILists[]
+  posts             IArrayTasks[]
+  lists             ILists[]
+  fingerPrint       UserFingerPrint @relation(fields: [userFingerPrintId], references: [id])
+  userFingerPrintId Int
 }
 
 model IArrayTasks {
@@ -37,7 +39,7 @@ model ITask {
   text_color    String
   IArrayTasks   IArrayTasks? @relation(fields: [iArrayTasksId], references: [id])
   iArrayTasksId Int?
-  comment       Comment?      @relation(fields: [commentId], references: [id])
+  comment       Comment?     @relation(fields: [commentId], references: [id])
   commentId     Int?
 }
 
@@ -63,12 +65,13 @@ model IList {
 
 model Comment {
   id      Int     @id @default(autoincrement())
-  message String
+  message String  @default("Нет комментария")
   todoId  Int
   ITask   ITask[]
 }
 
 model UserFingerPrint {
   id          Int    @id @default(autoincrement())
-  fingerPrint String @default("Нет комментария")
+  fingerPrint String
+  User        User[]
 }
