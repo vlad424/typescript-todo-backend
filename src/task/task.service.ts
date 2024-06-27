@@ -13,7 +13,15 @@ export class TaskService {
       include: {
         posts: {
           include: {
-            todos: true,
+            todos: {
+              include: {
+                comment: {
+                  select: {
+                    message: true
+                  }
+                }
+              }
+            }
           },
         },
       },

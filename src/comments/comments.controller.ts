@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 
 @Controller('/workspace/:id/lists')
@@ -13,6 +13,10 @@ export class CommentsController {
   @Delete()
   async DeleteUserList(@Body() data : {id: number}) {
     console.log(data.id)
+  }
+  @Post()
+  async PostComment(@Body() data: {msg: string, addr: number}) {
+    console.log(data.msg)
   }
 }
 
