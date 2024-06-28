@@ -30,7 +30,22 @@ export class AuthService {
 
     const tokens = await this.issueToken(user.id)
 
-    return {user: user, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken}
+    const role = await this.prisma.role.findUnique({
+      where: {id: +user.roleId},
+      select: {
+        user_role: true
+      }
+    })
+
+    return {user: {
+      email: user.email,
+      first_name: user.first_name,
+      id: user.id,
+      last_name: user.last_name,
+      login: user.login,
+      password: user.password,
+      role: role.user_role
+    }, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken}
   }
 
   async getNewToken(refreshToken: string) {
@@ -63,7 +78,8 @@ export class AuthService {
         first_name: dto.first_name,
         login: dto.login,
         password: await hash(dto.password),
-        role: 'user',
+        roleId: 1, 
+
         posts: {
           create: [
             {
