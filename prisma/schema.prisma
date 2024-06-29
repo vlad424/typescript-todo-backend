@@ -15,12 +15,11 @@ model User {
   first_name String
   last_name  String
   password   String
-  role       String
+  role       Role   @relation(fields: [roleId], references: [id])
 
-  posts             IArrayTasks[]
-  lists             ILists[]
-  fingerPrint       UserFingerPrint @relation(fields: [userFingerPrintId], references: [id])
-  userFingerPrintId Int
+  posts           IArrayTasks[]
+  lists           ILists[]
+  roleId          Int
 }
 
 model IArrayTasks {
@@ -70,8 +69,13 @@ model Comment {
   ITask   ITask[]
 }
 
+model Role {
+  id        Int    @id @default(autoincrement())
+  user_role String
+  User      User[]
+}
+
 model UserFingerPrint {
   id          Int    @id @default(autoincrement())
   fingerPrint String
-  User        User[]
 }

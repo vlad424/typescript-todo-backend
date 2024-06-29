@@ -16,7 +16,7 @@ export class ListService {
     });
     const users = await this.prisma.user.findMany({
       where: {
-        role: 'user',
+        role: {id: 1},
       },
       include: {
         posts: {
