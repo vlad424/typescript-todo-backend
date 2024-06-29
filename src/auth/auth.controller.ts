@@ -8,6 +8,14 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @HttpCode(200)
+  @Get('/')
+  async serverUp() {
+    return {
+      msg: "server up"
+    }
+  }
+
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('/register')
