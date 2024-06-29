@@ -5,7 +5,7 @@ async function bootstrap() {
   const PORT = process.env.PORT || 5000
   const app = await NestFactory.create(AppModule);
 
-  var whitelist = ['https://website.com', 'https://www.website.com'];
+  var whitelist = ['http://95.163.223.141:3000', 'http://95.163.223.141:3000'];
 app.enableCors({
 origin: function (origin, callback) {
   if (whitelist.indexOf(origin) !== -1) {
