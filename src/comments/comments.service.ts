@@ -21,7 +21,14 @@ export class CommentsService {
   }
   async PostComment(data: {msg: string, addr: number}) {
     const task = await this.prisma.iTask.findUnique({
-      where: {id: data.addr}
+      where: {id: +data.addr}
+    })
+
+    const comment = await this.prisma.comment.create({
+      data: {
+        message: data.msg,
+        todoId: +data.addr
+      }
     })
 
     return task
