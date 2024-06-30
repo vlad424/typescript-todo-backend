@@ -13,6 +13,7 @@ export class TaskController {
   async getUserTasks(@Param() params: any) {
     return this.taskService.getUsersPosts(params.id)
   }
+  
   @HttpCode(200)
   @Post(':id')
   async saveUsersPosts(@Param('id') id: number, @Body() data: savePostsDto | saveArrayDto) {
