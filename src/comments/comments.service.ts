@@ -24,12 +24,30 @@ export class CommentsService {
       where: {id: +data.addr}
     })
 
-    const comment = await this.prisma.comment.create({
-      data: {
-        message: data.msg,
-        todoId: +data.addr
-      }
+    const findComment = await this.prisma.comment.findMany({
+      where: {  todoId: +data.addr}
     })
+
+    if(!findComment) {
+      const comment = await this.prisma.comment.create({
+        data: {
+          message: data.msg,
+          todoId: +data.addr
+        }
+      })
+
+      return comment
+    }
+    else {
+      const comment = await this.prisma.comment.updateMany({
+        data: {
+          message: data.msg,
+          todoId: +data.addr
+        }
+      })
+
+      return comment
+    }
 
     return task
   }
