@@ -25,7 +25,7 @@ export class CommentsService {
     })
 
     const findComment = await this.prisma.comment.findMany({
-      where: {  todoId: +data.addr}
+      where: { todoId: +task.id}
     })
 
     if(!findComment) {
@@ -35,8 +35,14 @@ export class CommentsService {
           todoId: +data.addr
         }
       })
+      const changedTask = await this.prisma.iTask.update({
+        where: {id: +data.addr},
+        data: {
+          commentId: comment.id
+        }
+      })
 
-      return comment
+      return changedTask
     }
     else {
       const comment = await this.prisma.comment.updateMany({
@@ -48,7 +54,5 @@ export class CommentsService {
 
       return comment
     }
-
-    return task
   }
 }
