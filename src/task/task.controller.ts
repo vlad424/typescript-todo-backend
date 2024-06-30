@@ -30,6 +30,7 @@ export class TaskController {
   async updateTaskById(@Body() data: updateTaskDto, @Req() request) {
     return this.taskService.updateTaskById(data)
   }
+  @HttpCode(200)
   @Patch(':id')
   async transportTaskInArray(@Body() data: transoprtTaskDto) {
     return this.taskService.transportTaskInArray(data)

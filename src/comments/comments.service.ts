@@ -19,4 +19,11 @@ export class CommentsService {
 
     return lists
   }
+  async PostComment(data: {msg: string, addr: number}) {
+    const task = await this.prisma.iTask.findUnique({
+      where: {id: data.addr}
+    })
+
+    return task
+  }
 }
